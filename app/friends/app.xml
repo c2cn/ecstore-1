@@ -1,0 +1,21 @@
+<app>
+    <name>朋友圈</name>
+    <description>朋友圈</description>
+    <author>
+        <name>ttmama_dev_team</name>
+        <email>team.@ittmom.com</email>
+        <url>http://www.ittmom.com</url>
+    </author>
+
+    <version>0.1</version>
+    <license>ittmom license</license>
+    <parent_model_class>dbeav_model</parent_model_class>
+    <depends>
+        <app>desktop</app>
+        <app>content</app>
+        <app>ectools</app>
+        <app>entermembercenter</app>
+        <app>apiactionlog</app>
+        <!-- <app>archive</app> -->
+    </depends>
+</app>

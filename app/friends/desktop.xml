@@ -1,0 +1,18 @@
+<desktop>
+    <permissions>
+        <permission id="friends" display='true' workground='friends.wrokground.friends'>朋友圈</permission>
+        <permission id="friends_member" display='true' workground='friends.wrokground.friends_member'>朋友圈作者管理</permission>
+    </permissions>
+    <workground name="朋友圈" id="friends.wrokground.friends" controller="admin_content" action="index" order="81">
+        <menugroup name="内容列表">
+            <menu controller='admin_content' action='index' permission='friends' display='true' order='82'>内容列表</menu>
+        </menugroup>
+         <menugroup name="评论和赞">
+            <menu controller='admin_comment' action='index' permission='friends' display='true' order='83'>评论列表</menu>
+            <menu controller='admin_praise' action='index' permission='friends' display='true' order='84'>点赞列表</menu>
+        </menugroup>
+        <menugroup name="绑定会员">
+            <menu controller='admin_member' action='index' permission='friends_member' display='true' order='85'>作者权限管理</menu>
+        </menugroup>
+    </workground>
+</desktop>

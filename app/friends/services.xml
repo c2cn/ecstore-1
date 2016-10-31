@@ -1,0 +1,11 @@
+<services>
+     <service id="desktop_finder.friends_mdl_content">
+        <class>friends_finder_content</class>
+    </service>  
+    <service id="desktop_finder.friends_mdl_comment">
+        <class>friends_finder_comment</class>
+    </service>    
+    <service id="desktop_finder.friends_mdl_members">
+        <class>friends_finder_member</class>
+    </service>
+</services>

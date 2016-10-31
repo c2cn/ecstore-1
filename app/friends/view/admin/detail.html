@@ -1,0 +1,47 @@
+    <div class="tableform">
+        <div class="division">
+            <table cellpadding="0" cellspacing="0" border="0">
+            <input type="hidden" name="msg_id" value="<{$content.msg_id}>">
+              <tr>  <th><{t}>是否发布<{/t}></th>
+                <td>  <{input type="bool" name='ifpub' value=$content.ifpub id="bools"}>  </td>
+              </tr>
+              <tr>
+                <th>
+                <{t}>图片：<{/t}>
+                </th>
+
+                <td>
+                  <div class="division pic-main" style="margin:0;position:relative">
+                    <div class="clearfix">
+                      <span class="pic-uploader">
+                      <{button app="desktop" class="btn-upload" label=$___b2c="添加图片"|t:'b2c' icon="image_new.gif"}>
+                      </span>
+                    </div>
+
+                    <div class="pic-area">
+                      <input type="hidden" name="image_default" value="<{$goods.image_default_id}>" />
+                      <{include file="admin/img/gimage_goods.html"}>
+                    </div>
+
+                  </div>
+                </td>
+              </tr>
+              <tr>  <th><{t}>内容：<{/t}></th>
+               <td><textarea name="content" style="margin: 0px; width: 857px; height: 282px;"><{$content.content}></textarea></td>
+              </tr>
+             <!--  <tr>
+                <th><{t}>开始时间：<{/t}>
+                <td><{input type="time" vtype="required" value=$bonus.from_time name="from_time"}></td>
+              </tr>
+              <tr>
+                <th><{t}>结束时间：<{/t}>
+                <td><{input type="time" vtype="required" value=$bonus.to_time name="to_time"}></td>
+              </tr> -->
+            </table>
+        </div>
+    </div>
+
+
+
+
+

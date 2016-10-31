@@ -1,0 +1,7 @@
+<site>
+	<module id='friends' controller='wap_friend' >
+        <name>friends</name>
+        <title>wap端朋友圈</title>
+        <disable>false</disable>
+    </module>
+</site>

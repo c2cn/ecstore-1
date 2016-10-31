@@ -1,0 +1,304 @@
+<form method="post" action="index.php?app=friends&ctl=admin_content&act=save" id='add-category-form' enctype="multipart/form-data">
+    <div class="tableform">
+        <div class="division">
+            <table cellpadding="0" cellspacing="0" border="0">
+            <input type="hidden" name="msg_id" value="<{$content.msg_id}>">
+              <tr>  <th><{t}>是否发布<{/t}></th>
+                <td>  <{input type="bool" name='ifpub' value=$content.ifpub id="bools"}>  </td>
+              </tr>
+              <tr>
+                <th>以哪位会员作为发表对象</th>
+                <td>
+                      <{input type='object'  object='members' app='b2c' name='author_id' vtype="required" textcol='name,member_id' value=$author_id  multiple=false filter=$member_filter  }>
+                </td>
+              </tr>
+              <tr>
+                <th>
+                <{t}>图片：<{/t}>
+                </th>
+
+                <td>
+                  <div class="division pic-main" style="margin:0;position:relative">
+                    <div class="clearfix">
+                      <span class="pic-uploader">
+                      <{button app="desktop" class="btn-upload" label=$___b2c="添加图片"|t:'b2c' icon="image_new.gif"}>
+                      </span>
+                    </div>
+
+                    <div class="pic-area">
+                      <input type="hidden" name="image_default" value="<{$goods.image_default_id}>" />
+                      <{include file="admin/img/gimage_goods.html"}>
+                    </div>
+
+                  </div>
+                </td>
+              </tr>
+              <tr>  <th><{t}>内容：<{/t}></th>
+               <td><textarea name="content" style="margin: 0px; width: 857px; height: 282px;"><{$content.content}></textarea></td>
+              </tr>
+              <tr id="bttton_link">
+                <td>
+                <{button type="button"  label=$___importexport="添加相关链接"|t:'site' id="addlink"}>
+                </td>
+              </tr>
+              <{if $content.links && !empty($content.links)}>
+      
+                  <{foreach from=$content.links item=data name=foo key=key}>
+                    <tr><th class="links_count"><{t app="b2c"}>链接名称<{$smarty.foreach.foo.iteration}><{/t}></th>
+                    <td><input name="links[<{$key}>][name]" value="<{$data.name}>" ></td>
+                    <th><{t app="b2c"}>链接地址:<{/t}></th>
+                    <td ><input name="links[<{$key}>][link]" value="<{$data.link}>" ></td>
+                    <th><{t app="b2c"}>删除:<{/t}></th>
+                    <td><span onclick="$(this).getParent('tr').destroy()"><{img src="bundle/delecate.gif" style="cursor:pointer;" alt=$___b2c="删除"|t:'b2c' title=$___b2c="删除"|t:'b2c' app="desktop"}></span></td>
+                    <th>向上</th>
+                    <td><span class="goprev-btn lnk">[^]&nbsp;向上</span></td>
+                    <th>向下</th>
+                    <td><span class="gonext-btn lnk">[v]&nbsp;向下</span></td>
+                    </tr>
+
+                <{/foreach}>
+
+              <{/if}>
+              <tr id="uuss_vi" >
+                <th>是否发布视频</th>
+                <td id="fupvideo">
+                   <{input type="bool" name='is_video' value=$content.is_video id="boosdss"}> 
+                </td>
+              </tr>
+              <tr  class="video_type hide">  <th><{t}>视频类型<{/t}></th>
+                <td>
+                  <select id="video_ty_sele">
+                      <option value="link">视频链接</option>
+                      <option value="file">上传</option>
+                  </select>
+                </td>
+              </tr>
+              <tr class="video_link<{if !empty($content.video) && $content.is_video=='true'}><{else}> hide <{/if}>">
+                  <th>请输入视频地址</th>
+                   <td><input type="text" name="video_link" value="<{$content.video}>" style="margin: 0px; width: 857px;" /></td>
+              </tr>
+             
+              <tr class="video_file hide">
+                <th>请选择文件</th>
+                 <td><input type="file" class="testFile" name="video" multiple="multiple"  ></td>
+              </tr>
+               <tr class="video_file <{if !empty($content.thumbnail)}><{else}>hide<{/if}>">
+                <th>视频缩略图</th>
+                <td><{input type='image'  name='thumbnail' value=$content.thumbnail}></td>
+              </tr>
+              <script>
+                $('addlink').addEvents({'click':function(){
+                  var count=$$(".links_count").length;
+                  // alert(count);
+                  if (count>=9) {alert('请适量添加广告！'); return};
+                  // var count=$$('.links_count') .length >= 10
+                  // var i = 3;
+                  var i=new Date().getTime();
+                  var tpl='<th class="links_count"><{t app="openim"}>链接名称:<{/t}></th>' +
+                  '<td><input class="x-input" type="text" name="links['+i+'][name]" value=""  onkeyup="words_deal(this);" size="20"></td>' +
+                  '<th><{t app="b2c"}>链接地址:<{/t}></th>' +
+                  '<td><input class="x-input" type="text" name="links['+i+'][link]" value="" size="20"></td>' +
+                  '<th class="del_dom"><{t app="b2c"}>删除:<{/t}></th>';
+                  var tr = new Element('tr',{'html':tpl});
+                  tr.getElement('.del_dom').addEvents({'click':function(){
+                  this.getParent().dispose();
+                  }});
+                  var add_box=this.getParent().getParent();
+                  add_box.adopt(tr);
+                   // add_box.inject(tr,'after')
+                }});
+                //字数限制
+                  function words_deal(datas){ 
+                    // alert("不能超过15个字符" ); 
+                    var count_num=15;
+                    var curLength=datas.get('value').length; 
+                    if(curLength>count_num){ 
+                      var num=datas.get('value').substr(0,count_num); 
+                      datas.set('value',num);
+                      alert("不能超过15个字符" ); 
+                    }
+                  } 
+
+                  $$(".goprev-btn").addEvent('click',function(e){
+                    var item = this.getParent().getParent();
+                    itemP = item.getPrevious();
+                    if (itemP.get('id')=='bttton_link') {
+                      return false;
+                    };
+                    if(itemP){
+                      item.inject(itemP,'before');
+                      }
+                    });
+                  $$(".gonext-btn").addEvent('click',function(e){
+                    var item = this.getParent().getParent();
+                    itemN =item.getNext();
+                     if (itemN.get('id')=='uuss_vi') {
+                      return false;
+                    };
+                    if(itemN){
+                      item.inject(itemN,'after');
+                    }
+                  });
+
+                   var fupvideo = $("fupvideo").getChildren();
+                   var video_type =$$('.video_type');
+                  
+                   var video_link =$$('.video_link');
+                   var video_file =$$('.video_file');
+                    fupvideo.addEvent("change",function(e){
+                        var type_val = this.value;
+                        if (type_val=='true') {
+                            video_type.removeClass('hide');
+
+                        };
+                        
+                      
+                    });
+                     var video_typechild=$('video_ty_sele');
+                    video_typechild.addEvent("click",function(){
+                     var type_val = this.value;
+                     // alert(type_val);
+                        if (type_val=='link') {
+                            video_link.removeClass('hide');
+                           video_file.addClass('hide');
+
+                        }else{
+                          video_file.removeClass('hide');
+                          video_link.addClass('hide');
+                        }
+                    
+                    })
+              </script>
+            </table>
+        </div>
+    </div>
+    <div class="table-action">
+        <{assign var=___d value=$___b2c='确定退出?'|t:'b2c'}>
+        <{button class="btn-primary" type="submit"  label=$___b2c="保存并关闭"|t:'b2c'}>
+        <{button class="btn-secondary " label=$___b2c="取消"|t:'b2c' onclick="if(confirm('{$___d}'))window.close()"}>
+    </div>
+</form>
+
+  <script>
+window.addEvent('domready',function(){
+//  setPos.periodical(200);
+});
+
+
+    var goodsEditFrame = (function(){
+ // setPos();
+  // goodsEditor = new ShopExGoodsEditor('gEditor',{imgtype:'<{$uploader}>',url:'<{$url}>',goods_id:'<{$goods.id}>'});
+  Ex_Loader('uploader',function(){
+    // var sss='<{$image_dir}>';
+    //         console.log(sss);
+    //         alert(sss);
+      $$('.pic-uploader').each(function(el,j){
+        if (document.getElements('.swiff-uploader-box')) {
+            document.getElements('.swiff-uploader-box').destroy();
+        }
+        var pic_main = el.getParent('.pic-main');
+        var area = pic_main.getElement('.pic-area');
+        var pics = pic_main.getElement('.all-pics');
+        new Swiff.Uploader( {
+            allowDuplicates: true,
+            verbose: true,
+            url:'index.php?app=image&ctl=admin_manage&act=gimage_swf_remote&sess_id='+sess_id,
+            path: '<{$image_dir}>/uploader.swf',
+            typeFilter: {
+                'Images (*.jpg, *.jpeg, *.gif, *.png)': '*.jpg; *.jpeg; *.gif; *.png'
+            },
+            fileSizeMax:'<{$IMAGE_MAX_SIZE}>',
+            target:el,
+            onSelect:function(rs){
+                if(rs)
+                rs.each(function(v){
+                    if(v.size>this.fileSizeMax){
+                        alert(v.name+'<{t}>\n\n文件超出大小<{/t}>');
+                    };
+                },this);
+            },
+            onSelectFail:function(rs){
+                rs.each(function(v){
+                    if(v.validationError=='sizeLimitMax'){
+                        alert(v.name+'<{t}>\n\n文件超出大小<{/t}>');
+                    };
+                });
+            },
+            onSelectSuccess:function(rs){
+                var PID='up_';
+                var _this=this;
+                rs.each(function(v,i){
+                     new Element('div',{'class':'gpic-box','id':PID+j+v.id}).inject(pics);
+                });
+                this.start();
+            },
+            onFileOpen:function(e){
+                $('up_'+j+e.id).setHTML('<em style="font-size:13px;font-family:Georgia;">0%</em>');
+            },
+            onFileProgress:function(e){
+                $('up_'+j+e.id).getElement('em').set('text',e.progress.percentLoaded+'%');
+            },
+            onFileComplete: function(res){
+                if(res.response.error){
+                    return  new MessageBox.error('<{t}>文件<{/t}>'+res.name+'<{t}>上传失败<{/t}>');
+                }
+                $('up_'+j+res.id).setHTML(res.response.text);
+                if(!$E('.current',area)&&$E('.gpic',area)){
+                  $E('.gpic',area).onclick();
+                }
+            }
+        });
+
+      });
+
+    });
+
+}); 
+goodsEditFrame();
+
+  var move_left = function(_this){
+    // console.log(11);
+    // e.stop();
+    var pic_box = _this.getParent().getParent();
+    if(pic_box.getPrevious() == null) {
+        pic_box.inject($$('.all-pics').getLast(),'bottom');
+    }else{
+        pic_box.inject(pic_box.getPrevious(),'before');
+    }
+};
+
+var move_right = function(_this){
+    //e.stop();
+    var pic_box = _this.getParent().getParent();
+    if(pic_box.getNext() == null) {
+        pic_box.inject($$('.all-pics').getLast(),'top');
+    }else{
+        pic_box.inject(pic_box.getNext(),'after')
+    }
+};
+// var goodsEditor.pic.del=function(_this) {
+//      var pic_box = _this.getParent().getParent();
+//     pic_box.destroy();
+// }
+var goodsEditor={pic:{del:function(_this){
+  // alert('1111111');
+  var pic_box = _this.getParent().getParent();
+    pic_box.destroy();
+}}}
+var imegs_del=function(_this) {
+     var pic_box = _this.getParent().getParent();
+    pic_box.destroy();
+}
+</script>
+
+<script>
+    $('add-category-form').store('target',{
+        onComplete:function(){
+            if(opener.finderGroup['<{$env.get._finder.finder_id}>'])
+                opener.finderGroup['<{$env.get._finder.finder_id}>'].refresh();
+            window.close();
+        }
+    });
+</script>
+
+

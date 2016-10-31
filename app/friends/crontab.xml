@@ -1,0 +1,8 @@
+<cronentries>
+   <cron id="friends_tasks_getimg">
+    <description>获取视频缩略图</description>
+    <schedule>*/10 * * * * </schedule>
+    <enabled>true</enabled>
+  </cron>
+</cronentries>
+

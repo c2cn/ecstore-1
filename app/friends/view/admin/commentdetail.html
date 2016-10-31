@@ -1,0 +1,67 @@
+<!-- <form id="membercardform" action="index.php?app=friends&ctl=admin_comment&act=to_reply"  method="POST" id="comment_gask_<{$comment.comment_id}>" > -->
+<div class="tableform" id="comment_gask_<{$comment.comment_id}>">
+<div class="division">
+<table width="60%" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+    <th>评论详情</th>
+      <td style="padding:5px;">
+      <ul>
+      <li> <b>
+      <label>朋友圈id:</label>
+      <{$comment.msg_id}></b></li>
+      <li>评论人:
+      <{$comment.author}></li>
+      <{if $comment.to_uname && !empty($comment.to_uname)}>
+      <li> <b>
+      <label>回复对象:</label>
+      <{$comment.to_uname}></b></li>
+      <{/if}>
+      <li> 
+      <label>评论时间:</label>
+      <{$comment.time|cdate:SDATE_STIME}></li>
+      <li>
+      <label>内容：</label>
+      <{$comment.content}></li>
+      </ul>
+      </td>
+    </tr>
+    <{if count($forcomlist) > 0}>
+    <tr>
+     <th>回复详情</th>
+    <td>
+    <{foreach from=$forcomlist item=items}>
+    <h5 style="font-weight:normal; padding-left:0"><{$items.author}>于<span class="assis" style="margin:0 3px; color:#333">[<{$items.time|cdate:SDATE_STIME}>]</span><{t}>回复：<{/t}><{$items.to_uname}>
+        <{t}> 内容：<{/t}><{$items.content}>
+    [<a href="index.php?app=friends&ctl=admin_comment&act=delete_reply&p[0]=<{$items.comment_id}>&finder_id=<{$env.get._finder.finder_id}>"><{t}>删除<{/t}></a>]
+    </h5>
+
+    <{/foreach}>
+
+    </td>
+    </tr>
+      <{/if}>
+    <tr>
+    <td align="right"><{t}>回复用户：<{/t}></td>
+    <td>
+    <input type="hidden" value="<{$comment.comment_id}>" name="comment_id"/>
+      <{input type="textarea"  class="inputstyle" name="reply_content" style=" width:60%" rows=7}>
+    </td>
+      <tr>
+    <td colspan="2" class="table-action"><{button label=$___b2c="立即回复" |t:'friends' app="friends" onclick="W.page('index.php?app=friends&ctl=admin_comment&act=to_reply&p[0]={$comment.comment_id}&finder_id={$env.get._finder.finder_id}', {data:$('comment_gask_{$comment.comment_id}'),method:'post'})"}> </td>
+  </tr>
+    </tr>
+</table>
+</div>
+<!-- <div class="table-action">
+  <{button type="submit"  label=$___membercard="保存"|t:'membercard'}>
+</div> -->
+<!-- </form> -->
+<script>
+// $('membercardform').store('target',{
+//   onComplete:function(){
+//     if(opener.finderGroup['<{$env.get._finder.finder_id}>'])
+//     opener.finderGroup['<{$env.get._finder.finder_id}>'].refresh();
+//     window.close();
+//   }
+// });
+</script>

@@ -1,0 +1,55 @@
+<!-- <{$friend_list|@print_r}> -->
+<{foreach from=$friend_list item=item key=key name=name}>
+<div class="item" style="border:1px solid red;">
+	<p>id:<{$item.id}></p>
+	<p>内容：<{$item.content}></p>
+	<p>作者：<{$item.author}></p>
+	<p>头像<{$item.member_pic}></p>
+	<p>发布时间<{$item.pubtime|cdate:FDATE_STIME}></p>
+	<p>发布状态<{$item.ifpub}></p>
+	<p>图片
+			<{if $item.imges   }>
+				<{foreach from=$item.imges item=imges key=key1 name=name2}>
+						<a href=""><img src="<{$imges|storager}>"></a>
+				<{/foreach}>
+			<{/if}>
+	</p>
+	<p>是否有视频<{$item.is_video}></p>
+	<p>视频地址<{$item.video}></p>
+	<p>访问量<{$item.visits}></p>
+	<p>点赞列表<{$item.zan}></p>
+	<span class="zan" data-url='<{link app=friends ctl=wap_friend act=praise}>' data-msg_id="<{$item.id}>" style="color:#ccc; padding-left:20px;"  >赞</span>
+	<span class="comment" style="color:blue;padding-left:20px;" >评论</span>
+	</div>
+<{/foreach}>
+
+<{wap_pagers data=$pager}>
+
+<script>
+	$('.zan').click(function() {
+	var url = $(this).data('url') ? $(this).data('url'):null;
+	var msg_id = $(this).data('msg_id') ? $(this).data('msg_id'):null;
+	if(url === null) {
+	    tools.error.show('数据错误，请刷新后重试！',2000);
+	}
+	var _this = this;
+	$.ajax({
+		    url: url,
+		    beforeSend : function() {tools.loading.show();},
+		    complete : function() {tools.loading.hide();},
+		    dataType : 'json',
+		    type : 'POST',
+		    data: {msg_id:msg_id},
+		    error : function() {tools.error.show('网络错误，请重试！',2000);},
+		    success: function(d) {
+		        console.log(d);
+		        if(d) {
+		            tools.success.show(d, 2000);
+		            // setTimeout(function() {window.location.href = d.redirect;},2000);
+		        }else {
+		            tools.error.show(d, 2000);
+		        }
+		    }
+		});
+	});
+</script>

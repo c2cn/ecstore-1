@@ -1,0 +1,34 @@
+<form action="index.php?app=friends&ctl=admin_comment&act=setting" method="POST" id="form01">
+    <div class="tableform">
+    <div class="division">
+    <h4><{t}>是否开启评论审核<{/t}></h4>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+
+      <tr>  <th><{t}>是否开启评论审核：<{/t}></th>
+      <td>  <{input type="bool" name='comment_setting' value=$comment_setting id="bools"}> </td>
+      </tr>
+
+      </table>
+      </div>
+
+
+    </div>
+</form>
+<{area inject=".mainFoot"}>
+   <div class="table-action">
+        <{button label="保存" type="button" id="btn01" class="btn-primary"}>
+   </div>
+<{/area}>
+<script>
+  $('btn01').addEvent('click',function(){
+
+      $('form01').store('target',{onComplete:function(re){
+           re = JSON.decode(re);
+
+           if(re.error)return;
+           $('form01').getParent('.dialog').retrieve('instance').close();
+      }});
+      $('form01').fireEvent('submit',{stop:$empty});
+  
+  });
+</script>
